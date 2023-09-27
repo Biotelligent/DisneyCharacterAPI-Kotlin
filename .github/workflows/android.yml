@@ -1,25 +1,34 @@
-name: Android CI
-# see https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
+# This workflow is to build for kotlin on jdk 17.
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
+name: Android CI with Gradle
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
     branches: [ "*" ]
+  pull_request:
+    branches: [ "main" ]
 
+permissions:
+  contents: read
+  
 jobs:
   build:
-
+  
     runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v4
-    - name: setup jdk for kotlin
-    - uses: actions/setup-java@v3
-      with:
-        java-version: '17'
-        distribution: 'temurin'      
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-    - name: Build with Gradle
-      run: ./gradlew build
+    
+    steps:    
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@ccb4328a959376b642e027874838f60f8e596de3
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Build with Gradle
+        run: ./gradlew build
+#    - uses: actions/upload-artifact@v3
+#      with:
+#        name: Package
+#        path: build/libs
