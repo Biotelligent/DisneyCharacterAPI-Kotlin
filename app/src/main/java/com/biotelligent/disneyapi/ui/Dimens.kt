@@ -14,7 +14,6 @@ import com.biotelligent.disneyapi.R
  * This approach doesn't consider multiple configurations. For that, an Ambient should be created.
  */
 object Dimens {
-
     val PaddingSmall: Dp
         @Composable get() = dimensionResource(R.dimen.margin_small)
 

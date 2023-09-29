@@ -28,9 +28,10 @@ data class DisneyCharacter(
         return films.size + shortFilms.size + parkAttractions.size
     }
 
-    override fun toString() = """
+    override fun toString() =
+        """
         id: $id name: $name popularity: $popularity
-    """.trimIndent()
+        """.trimIndent()
 }
 
 @Dao
