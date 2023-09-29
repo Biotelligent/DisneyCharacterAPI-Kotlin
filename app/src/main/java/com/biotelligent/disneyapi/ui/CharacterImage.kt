@@ -35,7 +35,7 @@ fun CharacterImage(
     contentScale: ContentScale = ContentScale.FillWidth,
     alpha: Float = DefaultAlpha,
     colorFilter: ColorFilter? = null,
-    requestBuilderTransform: RequestBuilderTransform<Drawable> = { it },
+    requestBuilderTransform: RequestBuilderTransform<Drawable> = { it }
 ) {
     if (isLoading || LocalInspectionMode.current) {
         Image(
@@ -43,7 +43,7 @@ fun CharacterImage(
             contentDescription = contentDescription,
             modifier = modifier,
             alignment = alignment,
-            contentScale = contentScale,
+            contentScale = contentScale
         )
         return
     }

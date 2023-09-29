@@ -39,13 +39,12 @@ import com.bumptech.glide.request.target.Target
 @Composable
 fun DisneyCharacterContent(
     disneyCharacter: DisneyCharacter,
-    imageHeight: Dp,
+    imageHeight: Dp
 ) {
     Column(
         Modifier
             .fillMaxWidth()
             .background(GrayBackground)
-
     ) {
         ConstraintLayout {
             val (image, info) = createRefs()
@@ -58,11 +57,11 @@ fun DisneyCharacterContent(
 
             CharacterInformation(
                 disneyCharacter = disneyCharacter,
-                modifier = Modifier.constrainAs(info) {
-                    top.linkTo(image.bottom)
-                }
+                modifier =
+                    Modifier.constrainAs(info) {
+                        top.linkTo(image.bottom)
+                    }
             )
-
         }
     }
 }
@@ -85,30 +84,32 @@ private fun CharacterImageHolder(
             contentDescription = null,
             isLoading = isLoading,
             modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Fit,
+            contentScale = ContentScale.Fit
         ) {
-            it.addListener(object : RequestListener<Drawable> {
-                override fun onLoadFailed(
-                    e: GlideException?,
-                    model: Any?,
-                    target: Target<Drawable>?,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    isLoading = false
-                    return false
-                }
+            it.addListener(
+                object : RequestListener<Drawable> {
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        isLoading = false
+                        return false
+                    }
 
-                override fun onResourceReady(
-                    resource: Drawable?,
-                    model: Any?,
-                    target: Target<Drawable>?,
-                    dataSource: DataSource?,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    isLoading = false
-                    return false
+                    override fun onResourceReady(
+                        resource: Drawable?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        dataSource: DataSource?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        isLoading = false
+                        return false
+                    }
                 }
-            })
+            )
         }
     }
 }
@@ -124,8 +125,9 @@ private fun CharacterInformation(
             textAlign = TextAlign.Left,
             style = MaterialTheme.typography.headlineMedium,
             maxLines = 1,
-            modifier = Modifier
-                .padding(horizontal = Dimens.PaddingNormal, vertical = Dimens.PaddingSmall)
+            modifier =
+                Modifier
+                    .padding(horizontal = Dimens.PaddingNormal, vertical = Dimens.PaddingSmall)
         )
 
         if (disneyCharacter.popularity == 0) {
@@ -156,13 +158,14 @@ private fun CharacterItemsInformation(
                     text = it,
                     textAlign = TextAlign.Left,
                     style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier
-                        .padding(
-                            horizontal = Dimens.PaddingNormal,
-                            vertical = Dimens.PaddingSmall
-                        )
-                        .fillMaxWidth()
-                        .align(Alignment.Start)
+                    modifier =
+                        Modifier
+                            .padding(
+                                horizontal = Dimens.PaddingNormal,
+                                vertical = Dimens.PaddingSmall
+                            )
+                            .fillMaxWidth()
+                            .align(Alignment.Start)
                 )
 
                 Box(
@@ -184,24 +187,24 @@ private fun CharacterItemsInformation(
 
 @Composable
 private fun headerText(title: String) {
-    Column() {
+    Column {
         Text(
             text = title.uppercase(),
             color = Color.Gray,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier
-                .background(GrayBackground)
-                .padding(horizontal = Dimens.PaddingNormal, vertical = Dimens.PaddingSmall)
-                .fillMaxWidth()
-                .align(Alignment.Start)
+            modifier =
+                Modifier
+                    .background(GrayBackground)
+                    .padding(horizontal = Dimens.PaddingNormal, vertical = Dimens.PaddingSmall)
+                    .fillMaxWidth()
+                    .align(Alignment.Start)
         )
     }
 }
 
 @Preview
 @Composable
-private fun DisneyCharacterContentPreview(
-) {
+private fun DisneyCharacterContentPreview() {
     DisneyCharacterContent(
         jessicaRabbit,
         imageHeight = 300.dp
@@ -209,13 +212,14 @@ private fun DisneyCharacterContentPreview(
 }
 
 // Populate a DisneyCharacter with dummy data for previewing
-private val jessicaRabbit = DisneyCharacter(
-    id = 6,
-    name = "Jessica Rabbit",
-    imageUrl = "https://static.wikia.nocookie.net/disney/images/2/2c/A.J._Arno.jpg",
-    films = listOf("Lilo & Stitch: The Series", "Who Framed Roger Rabbit?"),
-    shortFilms = listOf("Honey, I Shrunk the Audience!"),
-    updatedAt = "2021-12-20T20:39:18.032Z",
-    url = null,
-    parkAttractions = listOf()
-)
+private val jessicaRabbit =
+    DisneyCharacter(
+        id = 6,
+        name = "Jessica Rabbit",
+        imageUrl = "https://static.wikia.nocookie.net/disney/images/2/2c/A.J._Arno.jpg",
+        films = listOf("Lilo & Stitch: The Series", "Who Framed Roger Rabbit?"),
+        shortFilms = listOf("Honey, I Shrunk the Audience!"),
+        updatedAt = "2021-12-20T20:39:18.032Z",
+        url = null,
+        parkAttractions = listOf()
+    )

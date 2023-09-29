@@ -15,22 +15,23 @@ interface DisneyCharacterRepository {
     suspend fun loadData(disneyCharacters: List<DisneyCharacter>)
 }
 
-class DefaultDisneyCharacterRepository @Inject constructor(
-    private val disneyCharacterDao: DisneyCharacterDao
-) : DisneyCharacterRepository {
+class DefaultDisneyCharacterRepository
+    @Inject
+    constructor(
+        private val disneyCharacterDao: DisneyCharacterDao
+    ) : DisneyCharacterRepository {
+        override val disneyCharacters: Flow<List<DisneyCharacter>> =
+            disneyCharacterDao.getDisneyCharacters()
 
-    override val disneyCharacters: Flow<List<DisneyCharacter>> =
-        disneyCharacterDao.getDisneyCharacters()
-
-    /**
-     * Loads disney character data into the database;
-     * TODO: Replace with API result using refit, checking updated_at to determine if record should be replaced
-     */
-    @OptIn(DelicateCoroutinesApi::class)
-    override suspend fun loadData(disneyCharacters: List<DisneyCharacter>) {
-        GlobalScope.launch(Dispatchers.IO) {
-            disneyCharacterDao.deleteAll()
-            disneyCharacters.forEach { disneyCharacterDao.insertDisneyCharacter(it) }
+        /**
+         * Loads disney character data into the database;
+         * TODO: Replace with API result using refit, checking updated_at to determine if record should be replaced
+         */
+        @OptIn(DelicateCoroutinesApi::class)
+        override suspend fun loadData(disneyCharacters: List<DisneyCharacter>) {
+            GlobalScope.launch(Dispatchers.IO) {
+                disneyCharacterDao.deleteAll()
+                disneyCharacters.forEach { disneyCharacterDao.insertDisneyCharacter(it) }
+            }
         }
     }
-}

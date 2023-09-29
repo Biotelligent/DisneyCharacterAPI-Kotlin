@@ -19,7 +19,7 @@ abstract class AppDatabase : RoomDatabase() {
 class Converters {
     @OptIn(ExperimentalSerializationApi::class)
     @TypeConverter
-    fun fromList(value : List<String>) = Json.encodeToString(value)
+    fun fromList(value: List<String>) = Json.encodeToString(value)
 
     @OptIn(ExperimentalSerializationApi::class)
     @TypeConverter

@@ -33,74 +33,82 @@ private fun JSONArray.toStringList(): List<String> {
 }
 
 @HiltViewModel
-class DisneyCharacterViewModel @Inject constructor(
-    @ApplicationContext val appContext: Context,
-    private val disneyCharacterRepository: DisneyCharacterRepository
-) : ViewModel() {
+class DisneyCharacterViewModel
+    @Inject
+    constructor(
+        @ApplicationContext val appContext: Context,
+        private val disneyCharacterRepository: DisneyCharacterRepository
+    ) : ViewModel() {
+        init {
+            // TODO: if we want to reset the database, or debugging && the (disneyCharacterRepository.characterCount == 0), loadSampleData
+            loadSampleData()
+        }
 
-    init {
-        // TODO: if we want to reset the database, or debugging && the (disneyCharacterRepository.characterCount == 0), loadSampleData
-        loadSampleData()
-    }
+        val uiState: StateFlow<DisneyCharacterUiState> =
+            disneyCharacterRepository
+                .disneyCharacters.map<List<DisneyCharacter>, DisneyCharacterUiState>(::Success)
+                .catch { emit(Error(it)) }
+                .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), Loading)
 
-    val uiState: StateFlow<DisneyCharacterUiState> = disneyCharacterRepository
-        .disneyCharacters.map<List<DisneyCharacter>, DisneyCharacterUiState>(::Success)
-        .catch { emit(Error(it)) }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), Loading)
+        /**
+         * Debugging; load sample data from assets/sampledata.json
+         */
+        private fun loadSampleData() {
+            viewModelScope.launch {
+                try {
+                    val json = loadJSONFromAsset(appContext, "sampledata.json")
+                    val jsonArray = JSONArray(json)
 
-    /**
-     * Debugging; load sample data from assets/sampledata.json
-     */
-    private fun loadSampleData() {
-        viewModelScope.launch {
-            try {
-                val json = loadJSONFromAsset(appContext, "sampledata.json")
-                val jsonArray = JSONArray(json)
+                    val disneyCharacters = mutableListOf<DisneyCharacter>()
+                    for (i in 0 until jsonArray.length()) {
+                        val jsonObject = jsonArray.getJSONObject(i)
+                        val id = jsonObject.getInt("_id")
 
-                val disneyCharacters = mutableListOf<DisneyCharacter>()
-                for (i in 0 until jsonArray.length()) {
-                    val jsonObject = jsonArray.getJSONObject(i)
-                    val id = jsonObject.getInt("_id")
+                        val disneyCharacter =
+                            DisneyCharacter(
+                                id = id,
+                                name = jsonObject.getString("name"),
+                                imageUrl = jsonObject.getString("imageUrl"),
+                                updatedAt = jsonObject.getString("updatedAt"),
+                                url = jsonObject.getString("url"),
+                                films = jsonObject.getJSONArray("films").toStringList(),
+                                shortFilms = jsonObject.getJSONArray("shortFilms").toStringList(),
+                                parkAttractions = jsonObject.getJSONArray("parkAttractions").toStringList()
+                            )
+                        disneyCharacters.add(disneyCharacter)
+                    }
 
-                    val disneyCharacter = DisneyCharacter(
-                        id = id,
-                        name = jsonObject.getString("name"),
-                        imageUrl = jsonObject.getString("imageUrl"),
-                        updatedAt = jsonObject.getString("updatedAt"),
-                        url = jsonObject.getString("url"),
-                        films = jsonObject.getJSONArray("films").toStringList(),
-                        shortFilms = jsonObject.getJSONArray("shortFilms").toStringList(),
-                        parkAttractions = jsonObject.getJSONArray("parkAttractions").toStringList()
-                    )
-                    disneyCharacters.add(disneyCharacter)
+                    disneyCharacterRepository.loadData(disneyCharacters)
+                } catch (e: Exception) {
+                    e.printStackTrace()
                 }
-
-                disneyCharacterRepository.loadData(disneyCharacters)
-            } catch (e: Exception) {
-                e.printStackTrace()
             }
         }
-    }
 
-    private fun loadJSONFromAsset(context: Context, fileName: String): String {
-        val json: String
-        try {
-            val inputStream = context.assets.open(fileName)
-            val size = inputStream.available()
-            val buffer = ByteArray(size)
-            inputStream.read(buffer)
-            inputStream.close()
-            json = String(buffer, Charset.forName("UTF-8"))
-        } catch (ex: IOException) {
-            ex.printStackTrace()
-            return ""
+        private fun loadJSONFromAsset(
+            context: Context,
+            fileName: String
+        ): String {
+            val json: String
+            try {
+                val inputStream = context.assets.open(fileName)
+                val size = inputStream.available()
+                val buffer = ByteArray(size)
+                inputStream.read(buffer)
+                inputStream.close()
+                json = String(buffer, Charset.forName("UTF-8"))
+            } catch (ex: IOException) {
+                ex.printStackTrace()
+                return ""
+            }
+            return json
         }
-        return json
     }
-}
 
 sealed interface DisneyCharacterUiState {
     object Loading : DisneyCharacterUiState
+
     data class Error(val throwable: Throwable) : DisneyCharacterUiState
+
     data class Success(val data: List<DisneyCharacter>) : DisneyCharacterUiState
 }

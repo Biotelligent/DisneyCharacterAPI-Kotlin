@@ -68,6 +68,7 @@ android {
     lint {
         baseline = file("lint-baseline.xml")
     }
+    // Include ktlint in every build: apply from: '../lint.gradle'
 }
 
 dependencies {
@@ -86,7 +87,7 @@ dependencies {
 
     // serialization and glide
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1")
-    implementation ("com.github.bumptech.glide:glide:4.14.2")
+    implementation("com.github.bumptech.glide:glide:4.14.2")
     implementation("com.github.bumptech.glide:compose:1.0.0-alpha.1")
     implementation("androidx.viewpager2:viewpager2:1.0.0")
     implementation("androidx.compose.ui:ui-util:1.4.3")
