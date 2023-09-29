@@ -68,49 +68,49 @@ fun CharacterPager(
         Column(modifier) {
             Column(
                 modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight()
-                        .background(color = Color.White)
-                        .padding(bottom = 24.dp)
-                        .graphicsLayer {
-                            val pageDirection = pagerState.targetPage - page
+                Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight()
+                    .background(color = Color.White)
+                    .padding(bottom = 24.dp)
+                    .graphicsLayer {
+                        val pageDirection = pagerState.targetPage - page
 
-                            val position =
+                        val position =
+                            (pagerState.currentPage - page) + pagerState.currentPageOffsetFraction
+                        val pageOffset =
+                            (
                                 (pagerState.currentPage - page) + pagerState.currentPageOffsetFraction
-                            val pageOffset =
-                                (
-                                    (pagerState.currentPage - page) + pagerState.currentPageOffsetFraction
                                 ).absoluteValue
 
-                            val scale =
-                                lerp(
-                                    start = MIN_SCALE,
-                                    stop = 1f,
-                                    fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                                )
-                            val rotation =
-                                lerp(
-                                    start = 0f,
-                                    stop = MAX_ROTATION,
-                                    fraction = position
-                                )
-                            alpha =
-                                lerp(
-                                    start = MIN_ALPHA,
-                                    stop = 1f,
-                                    fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                                )
-
-                            Log.d(
-                                TAG,
-                                "PagerState direction: $pageDirection  page: $page position $position scale: $scale rotation: $rotation currentPage ${pagerState.currentPage} target ${pagerState.targetPage} offset: ${pagerState.currentPageOffsetFraction}"
+                        val scale =
+                            lerp(
+                                start = MIN_SCALE,
+                                stop = 1f,
+                                fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                            )
+                        val rotation =
+                            lerp(
+                                start = 0f,
+                                stop = MAX_ROTATION,
+                                fraction = position
+                            )
+                        alpha =
+                            lerp(
+                                start = MIN_ALPHA,
+                                stop = 1f,
+                                fraction = 1f - pageOffset.coerceIn(0f, 1f)
                             )
 
-                            rotationZ = -rotation
-                            scaleX = scale
-                            scaleY = scale
-                        }
+                        Log.d(
+                            TAG,
+                            "PagerState direction: $pageDirection  page: $page position $position scale: $scale rotation: $rotation currentPage ${pagerState.currentPage} target ${pagerState.targetPage} offset: ${pagerState.currentPageOffsetFraction}"
+                        )
+
+                        rotationZ = -rotation
+                        scaleX = scale
+                        scaleY = scale
+                    }
             ) {
                 DisneyCharacterContent(disneyCharacter = disneyCharacter, imageHeight = 300.dp)
             }

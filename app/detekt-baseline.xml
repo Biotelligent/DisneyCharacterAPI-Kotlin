@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>ForbiddenComment:DisneyCharacterScreen.kt$// TODO: set up AnimateFloatAsState so animation can be inspected in the preview .</ID>
+    <ID>MagicNumber:Color.kt$0xFF625b71</ID>
+    <ID>MagicNumber:Color.kt$0xFF6650a4</ID>
+    <ID>MagicNumber:Color.kt$0xFF7D5260</ID>
+    <ID>MagicNumber:Color.kt$0xFFCCC2DC</ID>
+    <ID>MagicNumber:Color.kt$0xFFD0BCFF</ID>
+    <ID>MagicNumber:Color.kt$0xFFEFB8C8</ID>
+    <ID>MagicNumber:Color.kt$0xFFF2F2F7</ID>
+    <ID>PrintStackTrace:DisneyCharacterViewModel.kt$DisneyCharacterViewModel$ex</ID>
+    <ID>TooGenericExceptionCaught:DisneyCharacterViewModel.kt$DisneyCharacterViewModel$e: Exception</ID>
+  </CurrentIssues>
+</SmellBaseline>

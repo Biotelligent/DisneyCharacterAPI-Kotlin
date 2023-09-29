@@ -1,3 +1,10 @@
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
 
 @Suppress("DSL_SCOPE_VIOLATION") // Remove when fixed https://youtrack.jetbrains.com/issue/KTIJ-19369
 plugins {
@@ -6,6 +13,7 @@ plugins {
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.hilt.gradle)
     alias(libs.plugins.ksp)
+    id("io.gitlab.arturbosch.detekt") version "1.23.1"
 }
 
 android {
@@ -69,6 +77,12 @@ android {
         baseline = file("lint-baseline.xml")
     }
     // Include ktlint in every build: apply from: '../lint.gradle'
+
+    detekt {
+        toolVersion = "1.23.1"
+        config.setFrom(file("../config/detekt/detekt.yml"))
+        buildUponDefaultConfig = true
+    }
 }
 
 dependencies {

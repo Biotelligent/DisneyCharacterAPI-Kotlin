@@ -39,7 +39,7 @@ interface DisneyCharacterDao {
     @Query("SELECT * FROM characters ORDER BY _id ASC LIMIT 50")
     fun getDisneyCharacters(): Flow<List<DisneyCharacter>>
 
-//  TODO: order by popularity; not valid for SQLite
+//  TODO_ISSUE: order by popularity; not valid for SQLite
 //    @Query("SELECT name, getPopularityCount() as popularityCount FROM characters ORDER BY popularityCount DESC LIMIT 50")
 //    fun getOrderedDisneyCharacters(): Flow<List<DisneyCharacter>>
 

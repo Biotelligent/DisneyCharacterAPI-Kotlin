@@ -32,6 +32,8 @@ private fun JSONArray.toStringList(): List<String> {
     return stringList
 }
 
+private const val WAIT_TIMEOUT = 5000
+
 @HiltViewModel
 class DisneyCharacterViewModel
     @Inject
@@ -40,7 +42,7 @@ class DisneyCharacterViewModel
         private val disneyCharacterRepository: DisneyCharacterRepository
     ) : ViewModel() {
         init {
-            // TODO: if we want to reset the database, or debugging && the (disneyCharacterRepository.characterCount == 0), loadSampleData
+            // TODOLATER: if we want to reset the database, or debugging && the (disneyCharacterRepository.characterCount == 0), loadSampleData
             loadSampleData()
         }
 
@@ -48,7 +50,7 @@ class DisneyCharacterViewModel
             disneyCharacterRepository
                 .disneyCharacters.map<List<DisneyCharacter>, DisneyCharacterUiState>(::Success)
                 .catch { emit(Error(it)) }
-                .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), Loading)
+                .stateIn(viewModelScope, SharingStarted.WhileSubscribed(WAIT_TIMEOUT.toLong()), Loading)
 
         /**
          * Debugging; load sample data from assets/sampledata.json
